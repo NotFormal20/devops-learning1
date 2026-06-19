@@ -1,0 +1,7 @@
+echo "2024-01-15 10:00:01 INFO Server starteeeed successfully" > ~/projects/devops/logs/server.log
+echo "2024-01-15 10:01:23 INFO User admin logged in" >> ~/projects/devops/logs/server.log
+echo "2024-01-15 10:05:47 WARNING Disk usage at 85% >> ~/projects/devops/logs/server.log
+echo "2024-01-15 10:10:12 ERROR Failed to connect to database" >> ~/projects/devops/logs/server.log
+echo "2024-01-15 10:11:00 INFO Retry attempt 1" >> ~/project/devops/logs/server.log
+echo "2024-01-15 10:11:05 ERROR Database connection refused" >> ~/projects/devops/logs/server.log
+
