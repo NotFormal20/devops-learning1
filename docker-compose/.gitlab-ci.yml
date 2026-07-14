@@ -1,0 +1,9 @@
+stages:
+  - hello
+hello-world:
+  stage: hello
+  script:
+    -echo "Привет, CI/CD!"
+    -echo "Сегодня: $(date)"
+    -echo "Ветка: $CI_COMMIT_BRANCH"
+
