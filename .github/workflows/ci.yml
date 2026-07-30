@@ -1,0 +1,54 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check HTML files
+        run: |
+          if [ ! -f index.html ]; then
+            echo "ERROR: index.html not found!"
+            exit 1
+          fi
+          if [ ! -s index.html ]; then
+            echo "ERROR: index.html is empty!"
+            exit 1
+          fi
+          echo "All HTML checks passed!"
+
+  build-and-push:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/my-devops-site:latest .
+          docker push ${{ secrets.DOCKER_USERNAME }}/my-devops-site:latest
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy message
+        run: |
+          echo "Деплой выполнен!"
+          echo "Образ: ${{ secrets.DOCKER_USERNAME }}/my-devops-site:latest"
+          echo "Скачай и запусти:"
+          echo "docker pull ${{ secrets.DOCKER_USERNAME }}/my-devops-site:latest"
+          echo "docker run -d -p 80:80 ${{ secrets.DOCKER_USERNAME }}/my-devops-site:latest"
